@@ -29,7 +29,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build all
-        run: npx nx run-many --target=build --all --prod --parallel --max-parallel=3 --skip-cache
+        run: npx nx run-many --target=build --all --prod --parallel --max-parallel=3 --skip-nx-cache
       - name: Release to NPM
         run: npm run release
         env:
