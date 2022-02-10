@@ -1,0 +1,38 @@
+name: Release CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout [main]
+        uses: actions/checkout@v2
+        with:
+          # fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
+          # Protected Branches commit workaround
+          token: ${{ secrets.GH_TOKEN }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      - name: git config (release config)
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Install Dependencies
+        run: npm install
+      - name: Build all
+        run: npx nx run-many --target=build --all --prod --parallel --max-parallel=3 --skip-cache
+      - name: Release to NPM
+        run: npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
