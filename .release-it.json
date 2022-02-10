@@ -1,0 +1,29 @@
+{
+  "git": {
+    "commit": true,
+    "push": true,
+    "tag": true,
+    "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs",
+    "tagName": "v${version}",
+    "tagAnnotation": "Release v${version}",
+    "requireCleanWorkingDir": false,
+    "requireUpstream": false,
+    "pushRepo": "origin",
+    "commitMessage": "chore(release): v${version} 👏 [skip ci]"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "v${version}",
+    "tokenRef": "GH_TOKEN"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  },
+  "hooks": {
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}.",
+    "after:bump": "npx auto-changelog -p"
+  }
+}
