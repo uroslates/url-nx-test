@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "url-ng-test": "apps/url-ng-test",
+    "url-ng-test-e2e": "apps/url-ng-test-e2e"
+  }
+}
